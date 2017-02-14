@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">FloatButton</string>
+    <string name="accessibility">开启悬浮球辅助功能</string>
+
+</resources>
