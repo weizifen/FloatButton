@@ -143,6 +143,7 @@ public class floatBallView extends LinearLayout {
                             return true;
                         }
                         if (mIsLongTouch && (mCurrentMode == MODE_NONE || mCurrentMode == MODE_MOVE)) {
+                            /*1111*/
                             mLayoutParams.x = (int) (motionEvent.getRawX() - mOffsetToParent);
                             mLayoutParams.y = (int) (motionEvent.getRawY() - mOffsetToParentY);
                             mWindowManager.updateViewLayout(floatBallView.this, mLayoutParams);
@@ -167,9 +168,6 @@ public class floatBallView extends LinearLayout {
                         mImgBigBall.setVisibility(INVISIBLE);
                         mCurrentMode = MODE_NONE;
                         break;
-                    default:
-                        break;
-
                 }
                 return true;
             }
@@ -188,6 +186,9 @@ public class floatBallView extends LinearLayout {
 //        });
     }
 
+    public void setLayoutParams(WindowManager.LayoutParams params) {
+        mLayoutParams = params;
+    }
 
         /**
          * 手指抬起后，根据当前模式触发对应功能
