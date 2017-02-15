@@ -12,7 +12,19 @@ import android.view.WindowManager;
 
 public class FloatWindowManager {
     private static WindowManager mWindowManager;
+    /**
+     * 小悬浮球View的实例
+     */
     private static floatBallView mBallView;
+
+    /**
+     * 大悬浮窗View的实例
+     */
+    private static FloatBigWindow bigWindow;
+    /**
+     * 大悬浮窗View的参数
+     */
+    private static WindowManager.LayoutParams bigWindowParams;
 
     /*添加ADDVIEW*/
     public static void addView(Context context)
@@ -69,6 +81,46 @@ public class FloatWindowManager {
         }
 
     }
+    /**
+     * 创建一个大悬浮窗。位置为屏幕正中间。
+     */
+    public static void createBigWindow(Context context) {
+        WindowManager windowManager = getWindowManager(context);
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager(context).getDefaultDisplay().getMetrics(dm);
+        int screenWidth=dm.widthPixels;
+        int screenHeight=dm.heightPixels;
+        if (bigWindow == null) {
+            bigWindow = new FloatBigWindow(context);
+            if (bigWindowParams == null) {
+                bigWindowParams = new WindowManager.LayoutParams();
+                bigWindowParams.x = screenWidth / 2
+                        - FloatBigWindow.viewWidth / 2;
+                bigWindowParams.y = screenHeight / 2
+                        - FloatBigWindow.viewHeight / 2;
+                bigWindowParams.type = WindowManager.LayoutParams.TYPE_PHONE;
+                bigWindowParams.format = PixelFormat.RGBA_8888;
+                bigWindowParams.gravity = Gravity.LEFT | Gravity.TOP;
+                bigWindowParams.width = FloatBigWindow.viewWidth;
+                bigWindowParams.height = FloatBigWindow.viewHeight;
+            }
+            windowManager.addView(bigWindow, bigWindowParams);
+        }
+    }
+
+    /**
+     * 移除一个大悬浮窗。位置为屏幕正中间。
+     */
+    public static void removeBigWindow(Context context)
+    {
+        if (bigWindow!=null)
+        {
+            WindowManager windowManager=getWindowManager(context);
+            windowManager.removeView(bigWindow);
+            bigWindow=null;
+        }
+    }
+
     private static WindowManager getWindowManager(Context context) {
         if (mWindowManager == null) {
             mWindowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);

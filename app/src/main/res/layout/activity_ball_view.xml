@@ -28,5 +28,12 @@
         android:textColor="#ffffff"
         android:textStyle="bold" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="但愿BUG能消除的BETA1.1版"
+        android:textSize="30sp"
+        />
+
 
 </LinearLayout>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="300dp"
+    android:layout_height="300dp"
+    android:background="@color/colorAccent"
+    android:id="@+id/float_big_windos"
+    >
+    <Button
+        android:id="@+id/ONE"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="5dp"
+        android:background="#4d4d4d"
+        android:layout_gravity="center"
+        android:text="ONE"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        />
+
+    <Button
+        android:id="@+id/back"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="5dp"
+        android:background="#4d4d4d"
+        android:layout_gravity="center"
+        android:text="Back"
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
+
+</LinearLayout>

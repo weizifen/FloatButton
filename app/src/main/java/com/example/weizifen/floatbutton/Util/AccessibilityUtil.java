@@ -44,7 +44,7 @@ public class AccessibilityUtil {
     private static final String TAG = "AccessibilityUtil";
     public static void doBack(AccessibilityService service)
     {
-        Log.d(TAG, "doBack: ");
+//        Log.d(TAG, "doBack: ");
         service.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK);
 
 
