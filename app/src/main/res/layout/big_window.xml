@@ -2,30 +2,126 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="300dp"
     android:layout_height="300dp"
-    android:background="@color/colorAccent"
+    android:background="@drawable/bgwin"
     android:id="@+id/float_big_windos"
     >
-    <Button
-        android:id="@+id/ONE"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="5dp"
-        android:background="#4d4d4d"
-        android:layout_gravity="center"
-        android:text="ONE"
-        android:textColor="#ffffff"
-        android:textStyle="bold"
-        />
 
-    <Button
-        android:id="@+id/back"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="5dp"
-        android:background="#4d4d4d"
-        android:layout_gravity="center"
-        android:text="Back"
-        android:textColor="#ffffff"
-        android:textStyle="bold" />
+
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="99dp"
+            android:layout_height="99dp"
+            android:id="@+id/ONE"
+            android:background="#4d4d4d"
+            android:text="锁屏"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+          />
+        <LinearLayout
+            android:layout_width="1dp"
+            android:layout_height="100dp"
+            android:background="#fff"></LinearLayout>
+        <Button
+            android:id="@+id/back"
+            android:layout_width="99dp"
+            android:layout_height="99dp"
+            android:background="#4d4d4d"
+            android:text="截图"
+            android:textColor="#ffffff"
+            android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="1dp"
+            android:layout_height="100dp"
+            android:background="#fff"></LinearLayout>
+        <Button
+            android:id="@+id/Three"
+            android:layout_width="99dp"
+            android:layout_height="99dp"
+            android:background="#4d4d4d"
+            android:text="Three"
+            android:textColor="#ffffff"
+            android:textStyle="bold" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="99dp"
+            android:layout_height="99dp"
+            android:id="@+id/four"
+            android:background="#4d4d4d"
+            android:text="FOUR"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            />
+        <LinearLayout
+            android:layout_width="1dp"
+            android:layout_height="100dp"
+            android:background="#fff"></LinearLayout>
+        <Button
+            android:id="@+id/five"
+            android:layout_width="99dp"
+            android:layout_height="99dp"
+            android:background="#4d4d4d"
+            android:text="FIVE"
+            android:textColor="#ffffff"
+            android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="1dp"
+            android:layout_height="100dp"
+            android:background="#fff"></LinearLayout>
+        <Button
+            android:id="@+id/six"
+            android:layout_width="99dp"
+            android:layout_height="99dp"
+            android:background="#4d4d4d"
+            android:text="SIX"
+            android:textColor="#ffffff"
+            android:textStyle="bold" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="99dp"
+            android:layout_height="99dp"
+            android:id="@+id/seven"
+            android:background="#4d4d4d"
+            android:text="SEVEN"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            />
+        <LinearLayout
+            android:layout_width="1dp"
+            android:layout_height="100dp"
+            android:background="#fff"></LinearLayout>
+        <Button
+            android:id="@+id/eight"
+            android:layout_width="99dp"
+            android:layout_height="99dp"
+            android:background="#4d4d4d"
+            android:text="EIGHT"
+            android:textColor="#ffffff"
+            android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="1dp"
+            android:layout_height="100dp"
+            android:background="#fff"></LinearLayout>
+        <Button
+            android:id="@+id/ten"
+            android:layout_width="99dp"
+            android:layout_height="99dp"
+            android:background="#4d4d4d"
+            android:text="TEN"
+            android:textColor="#ffffff"
+            android:textStyle="bold" />
+    </LinearLayout>
+
 
 </LinearLayout>

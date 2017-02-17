@@ -1,26 +1,46 @@
 package com.example.weizifen.floatbutton;
 
+import android.app.Activity;
+import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.blankj.utilcode.utils.Utils;
 import com.example.weizifen.floatbutton.Service.FloatBallService;
 import com.example.weizifen.floatbutton.Util.AccessibilityUtil;
+import com.example.weizifen.floatbutton.Util.AdminReceiver;
+import com.example.weizifen.floatbutton.Util.LockUtil;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static Activity instance;
     private Button mBtnStart;
     private Button mBtnQuit;
+
+    /*===========截图=========*/
+    private static final int MY_REQUEST_CODE = 9999;
+    private DevicePolicyManager policyManager;
+    private ComponentName componentName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ball_view);
         initView();
+
+        if (instance==null)
+        {
+            instance =this;
+        }
         if (Build.VERSION.SDK_INT>23)
         {
             if (!Settings.canDrawOverlays(this))
@@ -69,7 +89,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+
+
+
     }
+
+
+
+
 
 
     /*
@@ -84,4 +111,61 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this,"请开启悬浮球辅助功能",Toast.LENGTH_SHORT).show();
         }
     }
+
+    /*=========================截图相关=================================*/
+//    private void DevicePolicyManager(){
+//        //获取设备管理服务
+//        policyManager = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
+//        //AdminReceiver 继承自 DeviceAdminReceiver
+//        componentName = new ComponentName(this, AdminReceiver.class);
+//
+//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == MY_REQUEST_CODE && resultCode == RESULT_OK) {
+            if (!policyManager.isAdminActive(componentName)) {   //若无权限
+
+            } else {
+                policyManager.lockNow();//直接锁屏
+            }
+        } else {
+
+        }
+    }
+//    /**
+//     * 锁屏
+//     */
+//    private static final String TAG = "MainActivity";
+//    private void lockScreen() {
+//        boolean active = policyManager.isAdminActive(componentName);
+//        if (!active) {   //若无权限
+//            Log.d(TAG, "lockScreen: ");
+//            activeManage();//去获得权限
+//        } else {
+//            policyManager.lockNow();//直接锁屏
+//        }
+//        //killSelf ，锁屏之后就立即kill掉我们的Activity，避免资源的浪费;
+//        killSelf();
+//    }
+//    /**
+//     * 激活设备
+//     */
+//    private void activeManage() {
+//        //启动设备管理(隐式Intent) - 在AndroidManifest.xml中设定相应过滤器
+//        Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+//        //权限列表
+//        intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, componentName);
+//        //描述(additional explanation)
+//        intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "激活后才可以使用锁屏功能 ^.^ ");
+//        startActivityForResult(intent, MY_REQUEST_CODE);
+//    }
+//    /**
+//     * kill自己
+//     */
+//    private void killSelf() {
+//        //killMyself ，锁屏之后就立即kill掉我们的Activity，避免资源的浪费;
+//        android.os.Process.killProcess(android.os.Process.myPid());
+//    }
+
 }
