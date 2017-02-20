@@ -2,13 +2,18 @@ package com.example.weizifen.floatbutton;
 
 import android.app.Activity;
 import android.content.Context;
+import android.media.projection.MediaProjectionManager;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.blankj.utilcode.utils.Utils;
+import com.example.weizifen.floatbutton.Util.Flash;
 import com.example.weizifen.floatbutton.Util.LockUtil;
+import com.example.weizifen.floatbutton.Util.ShotUtil;
 
 
 /**
@@ -25,9 +30,16 @@ public class FloatBigWindow extends LinearLayout {
      * 记录大悬浮窗的高度
      */
     public static int viewHeight;
+        /*=====================截图相关================*/
+
+    /*闪光灯开关*/
+    private boolean choose;
+
+
 
     private Button One;
-    private Button  Back;
+    private Button  Two;
+    private Button Three;
     private static final String TAG = "FloatBigWindow";
     public FloatBigWindow(final Context context) {
         super(context);
@@ -39,7 +51,10 @@ public class FloatBigWindow extends LinearLayout {
         viewHeight = view.getLayoutParams().height;
         One=(Button)findViewById(R.id.ONE);
 
-        Back=(Button)findViewById(R.id.back);
+        Two=(Button)findViewById(R.id.two);
+
+        Three=(Button)findViewById(R.id.Three);
+
         One.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,19 +64,58 @@ public class FloatBigWindow extends LinearLayout {
             }
         });
 
-        Back.setOnClickListener(new OnClickListener() {
+        Two.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-            FloatWindowManager.removeBigWindow(context);
-//                Intent intent=new Intent(context,ScreenShot.class);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//
-//
-//                context.startActivity(intent);
+                ShotUtil.requestCapturePermission(MainActivity.instance);
+                FloatWindowManager.removeBigWindow(context);
 
-                FloatWindowManager.createScreenWindow(context);
+
             }
         });
+        choose=true;
+
+
+
+        /*=================================闪光灯=====================================*/
+        final Flash flash=new Flash();
+
+        Three.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                if (choose){
+                    flash.open();
+                    flash.on();
+                    choose=false;
+                }else if (choose==false){
+                    flash.off();
+                    flash.close();
+                    choose=true;
+
+                }
+            }
+        });
+
+    }
+            /*=================================闪光灯=====================================*/
+
+
+    public void requestCapturePermission() {
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            //5.0 之后才允许使用屏幕截图
+
+            return;
+        }
+
+        MediaProjectionManager mediaProjectionManager = (MediaProjectionManager)
+                MainActivity.context.getSystemService(Context.MEDIA_PROJECTION_SERVICE);
+        MainActivity.instance.startActivityForResult(
+                mediaProjectionManager.createScreenCaptureIntent(),
+                MainActivity.REQUEST_MEDIA_PROJECTION);
+        Toast.makeText(MainActivity.context,"执行了",Toast.LENGTH_SHORT).show();
     }
 
 
@@ -73,7 +127,6 @@ public class FloatBigWindow extends LinearLayout {
     {
 //        FloatWindowManager.GetandSaveCurrentImage(context,activity);
     }
-
 
 
 

@@ -1,45 +1,54 @@
 package com.example.weizifen.floatbutton;
 
 import android.app.Activity;
-import android.app.admin.DevicePolicyManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.media.projection.MediaProjectionManager;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.blankj.utilcode.utils.Utils;
 import com.example.weizifen.floatbutton.Service.FloatBallService;
+import com.example.weizifen.floatbutton.Service.FloatWindowsService;
 import com.example.weizifen.floatbutton.Util.AccessibilityUtil;
-import com.example.weizifen.floatbutton.Util.AdminReceiver;
 import com.example.weizifen.floatbutton.Util.LockUtil;
 
 public class MainActivity extends AppCompatActivity {
-
+    public static Context context;
     public static Activity instance;
     private Button mBtnStart;
     private Button mBtnQuit;
 
-    /*===========截图=========*/
-    private static final int MY_REQUEST_CODE = 9999;
-    private DevicePolicyManager policyManager;
-    private ComponentName componentName;
+
+
+    public static final int REQUEST_MEDIA_PROJECTION = 18;
+
+
+    /*===========锁屏=========*/
+//    private static final int MY_REQUEST_CODE = 9999;
+//    private DevicePolicyManager policyManager;
+//    private ComponentName componentName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ball_view);
         initView();
+        requestCapturePermission();
+
+
 
         if (instance==null)
         {
             instance =this;
+        }
+        if (context ==null)
+        {
+            context=this;
         }
         if (Build.VERSION.SDK_INT>23)
         {
@@ -54,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             }
+
 
         }
     }
@@ -89,9 +99,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-
-
     }
 
 
@@ -123,15 +130,37 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == MY_REQUEST_CODE && resultCode == RESULT_OK) {
-            if (!policyManager.isAdminActive(componentName)) {   //若无权限
+        if (requestCode == REQUEST_MEDIA_PROJECTION && resultCode == RESULT_OK&& data != null)
+        {
+            FloatWindowsService.setResultData(data);
+            startService(new Intent(getApplicationContext(), FloatWindowsService.class));
 
-            } else {
-                policyManager.lockNow();//直接锁屏
+        }
+        if (requestCode == LockUtil.MY_REQUEST_CODE && resultCode == RESULT_OK) {
+            if (!LockUtil.policyManager.isAdminActive(LockUtil.componentName)) {   //若无权限
+            }
+            else {
+                LockUtil.policyManager.lockNow();//直接锁屏
             }
         } else {
 
         }
+    }
+
+
+    public void requestCapturePermission() {
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            //5.0 之后才允许使用屏幕截图
+
+            return;
+        }
+
+        MediaProjectionManager mediaProjectionManager = (MediaProjectionManager)
+               getSystemService(Context.MEDIA_PROJECTION_SERVICE);
+               startActivityForResult(
+                mediaProjectionManager.createScreenCaptureIntent(),
+                REQUEST_MEDIA_PROJECTION);
     }
 //    /**
 //     * 锁屏

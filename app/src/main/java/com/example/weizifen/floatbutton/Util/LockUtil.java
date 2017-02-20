@@ -45,6 +45,7 @@ public class LockUtil {
         //描述(additional explanation)
         intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "激活后才可以使用锁屏功能 ^.^ ");
         activity.startActivityForResult(intent, MY_REQUEST_CODE);
+
     }
 
     /**
