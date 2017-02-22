@@ -13,7 +13,7 @@
         android:layout_marginBottom="5dp"
         android:background="#4d4d4d"
         android:gravity="center"
-        android:text="STRAT"
+        android:text="START"
         android:textColor="#ffffff"
         android:textStyle="bold" />
 

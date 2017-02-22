@@ -5,11 +5,6 @@
     android:background="@drawable/bgwin"
     android:id="@+id/float_big_windos"
     >
-
-
-
-
-
     <LinearLayout
         android:layout_width="300dp"
         android:layout_height="100dp"
@@ -70,7 +65,7 @@
             android:layout_width="99dp"
             android:layout_height="99dp"
             android:background="#4d4d4d"
-            android:text="FIVE"
+            android:text="搜索"
             android:textColor="#ffffff"
             android:textStyle="bold" />
         <LinearLayout
@@ -120,10 +115,8 @@
             android:layout_width="99dp"
             android:layout_height="99dp"
             android:background="#4d4d4d"
-            android:text="TEN"
+            android:text="TEN(返回)"
             android:textColor="#ffffff"
             android:textStyle="bold" />
     </LinearLayout>
-
-
 </LinearLayout>

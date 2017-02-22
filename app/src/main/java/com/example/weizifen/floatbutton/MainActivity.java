@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.weizifen.floatbutton.Service.CaptureService;
 import com.example.weizifen.floatbutton.Service.FloatBallService;
+import com.example.weizifen.floatbutton.Service.RecordService;
 import com.example.weizifen.floatbutton.Util.AccessibilityUtil;
 import com.example.weizifen.floatbutton.Util.LockUtil;
 
@@ -39,9 +40,12 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_MEDIA_PROJECTION = 1;
     private Intent mResultIntent = null;
     private int mResultCode = 0;
-    boolean isCapture;
 
-    private Button jietu;
+
+
+    public static boolean isCapture;
+
+
 
 
 
@@ -120,18 +124,17 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-/*------------锁屏意图------------------*/
+/*------------截图意图------------------*/
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 private void startIntent() {
     if (mResultIntent != null && mResultCode != 0) {
         startService(new Intent(getApplicationContext(), CaptureService.class));
+
     } else {
         startActivityForResult(mMpMngr.createScreenCaptureIntent(), REQUEST_MEDIA_PROJECTION);
+
     }
 }
-
-
-
 
 
 
@@ -149,13 +152,7 @@ private void startIntent() {
     }
 
     /*=========================截图相关=================================*/
-//    private void DevicePolicyManager(){
-//        //获取设备管理服务
-//        policyManager = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
-//        //AdminReceiver 继承自 DeviceAdminReceiver
-//        componentName = new ComponentName(this, AdminReceiver.class);
-//
-//    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
