@@ -2,6 +2,7 @@ package com.example.weizifen.floatbutton;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.media.projection.MediaProjectionManager;
 import android.os.Build;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.blankj.utilcode.utils.Utils;
+import com.example.weizifen.floatbutton.Other.FinalInfo;
 import com.example.weizifen.floatbutton.Util.Flash;
 import com.example.weizifen.floatbutton.Util.LockUtil;
 import com.example.weizifen.floatbutton.Util.ShotUtil;
@@ -69,6 +71,8 @@ public class FloatBigWindow extends LinearLayout {
             public void onClick(View view) {
                 ShotUtil.requestCapturePermission(MainActivity.instance);
                 FloatWindowManager.removeBigWindow(context);
+                Intent intent=new Intent(FinalInfo.JIETU);
+                context.sendBroadcast(intent);
 
 
             }
@@ -100,33 +104,6 @@ public class FloatBigWindow extends LinearLayout {
 
     }
             /*=================================闪光灯=====================================*/
-
-
-    public void requestCapturePermission() {
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            //5.0 之后才允许使用屏幕截图
-
-            return;
-        }
-
-        MediaProjectionManager mediaProjectionManager = (MediaProjectionManager)
-                MainActivity.context.getSystemService(Context.MEDIA_PROJECTION_SERVICE);
-        MainActivity.instance.startActivityForResult(
-                mediaProjectionManager.createScreenCaptureIntent(),
-                MainActivity.REQUEST_MEDIA_PROJECTION);
-        Toast.makeText(MainActivity.context,"执行了",Toast.LENGTH_SHORT).show();
-    }
-
-
-
-
-
-    /*截图功能*/
-    public static void shootLoacleView(Activity activity,Context context)
-    {
-//        FloatWindowManager.GetandSaveCurrentImage(context,activity);
-    }
 
 
 

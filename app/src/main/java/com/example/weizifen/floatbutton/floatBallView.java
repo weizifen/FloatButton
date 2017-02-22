@@ -80,7 +80,11 @@ public class floatBallView extends LinearLayout {
     private int count;
 
 
-    private GestureDetector.OnDoubleTapListener gestureDetector;
+
+    private boolean waitDouble = true;
+    private static final int DOUBLE_CLICK_TIME = 350; //两次单击的时间间隔
+
+
 
 
     public floatBallView(Context context) {
@@ -115,11 +119,16 @@ public class floatBallView extends LinearLayout {
         });
 
 
+
+
+
+
         mImgBg.setOnTouchListener(new OnTouchListener() {
             private static final String TAG = "floatBallView";
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
+
 
                 switch (motionEvent.getAction()) {
                     /*单击*/
@@ -131,22 +140,49 @@ public class floatBallView extends LinearLayout {
                         mLastDownX = motionEvent.getX();
                         mLastDownY = motionEvent.getY();
 //                        Log.d(TAG, "onTouch: "+mLastDownTime+"       "+mLastDownX+"       "+mLastDownY);
-                        // 如果第二次点击 距离第一次点击时间过长 那么将第二次点击看为第一次点击
-                        if (firstClick != 0 && System.currentTimeMillis() - firstClick > 300) {
-                            count = 0;
+//                        // 如果第二次点击 距离第一次点击时间过长 那么将第二次点击看为第一次点击
+//                        if (firstClick != 0 && System.currentTimeMillis() - firstClick > 300) {
+//                            count = 0;
+//                        }
+//                        count++;
+//                        if (count == 1) {
+//                            firstClick = System.currentTimeMillis();
+//                            AccessibilityUtil.doBack(mService);
+//                        } else if (count == 2) {
+//                            lastClick = System.currentTimeMillis();
+//                            // 两次点击小于300ms 也就是连续点击
+//                            if (lastClick - firstClick < 300) {// 判断是否是执行了双击事件
+//                                System.out.println(">>>>>>>>执行了双击事件");
+//                                FloatWindowManager.createBigWindow(getContext());
+//
+//                            }
+//
+//                        }
+                        if ( waitDouble == true )   //第一次击按钮，等待双击
+                        {
+                            waitDouble = false;    //准备接受双击
+                            Thread thread = new Thread() {  //开启线程
+                                public void run() {
+                                    try {
+                                        sleep(DOUBLE_CLICK_TIME);  //线程睡眠
+                                        if ( waitDouble == false ) {  //如果在睡眠时间中任未进行第二次点击，
+                                            waitDouble = true;
+                                            Log.d(TAG, "single: ");
+                                            AccessibilityUtil.doBack(mService);
+                                        }
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            };
+                            thread.start();
                         }
-                        count++;
-                        if (count == 1) {
-                            firstClick = System.currentTimeMillis();
-                        } else if (count == 2) {
-                            lastClick = System.currentTimeMillis();
-                            // 两次点击小于300ms 也就是连续点击
-                            if (lastClick - firstClick < 300) {// 判断是否是执行了双击事件
-                                System.out.println(">>>>>>>>执行了双击事件");
-                                FloatWindowManager.createBigWindow(getContext());
+                        else {
+                            waitDouble = true;
+                            Log.d(TAG, "double");
+                            FloatWindowManager.createBigWindow(getContext());
+                        }
 
-                            }
-                        }
                         postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -179,9 +215,10 @@ public class floatBallView extends LinearLayout {
                         mIsTouching = false;
                         if (mIsLongTouch) {
                             mIsLongTouch = false;
-                        } else if (isClick(motionEvent)) {
-                            AccessibilityUtil.doBack(mService);
                         }
+//                        else if (isClick(motionEvent)) {
+//                            AccessibilityUtil.doBack(mService);
+//                        }
                         else {
                             doUp();
                         }
@@ -194,13 +231,9 @@ public class floatBallView extends LinearLayout {
                 return true;
             }
         });
-
-
-
-
-
-
     }
+
+
 
     public void setLayoutParams(WindowManager.LayoutParams params) {
         mLayoutParams = params;

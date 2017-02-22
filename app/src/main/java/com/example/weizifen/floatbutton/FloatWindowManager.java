@@ -38,10 +38,7 @@ public class FloatWindowManager {
      */
     private static WindowManager.LayoutParams bigWindowParams;
 
-    /**
-     * 截图悬浮窗View的实例
-     */
-    private static Screen_shot screenShot;
+
     /**
      * 截图悬浮窗View的参数
      */
@@ -142,116 +139,6 @@ public class FloatWindowManager {
             bigWindow=null;
         }
     }
-
-    /**
-     * 创建一个截图悬浮窗。位置为屏幕正中间。
-     */
-    public static void createScreenWindow(Context context) {
-        WindowManager windowManager = getWindowManager(context);
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager(context).getDefaultDisplay().getMetrics(dm);
-        int screenWidth=dm.widthPixels;
-        int screenHeight=dm.heightPixels;
-        if (screenShot == null) {
-            screenShot = new Screen_shot(context);
-            if (shotWindowParams == null) {
-                shotWindowParams = new WindowManager.LayoutParams();
-                shotWindowParams.x = screenWidth / 2
-                        - Screen_shot.viewWidth / 2;
-                shotWindowParams.y = screenHeight / 2
-                        - Screen_shot.viewHeight / 2;
-                shotWindowParams.type = WindowManager.LayoutParams.TYPE_PHONE;
-                shotWindowParams.format = PixelFormat.RGBA_8888;
-                shotWindowParams.gravity = Gravity.LEFT | Gravity.TOP;
-                shotWindowParams.width = Screen_shot.viewWidth;
-                shotWindowParams.height = Screen_shot.viewHeight;
-            }
-            windowManager.addView(screenShot, shotWindowParams);
-        }
-    }
-    /**
-     * 移除一个截图悬浮窗。位置为屏幕正中间。
-     */
-    public static void removeScreenWindow(Context context)
-    {
-        if (screenShot!=null)
-        {
-            WindowManager windowManager=getWindowManager(context);
-            windowManager.removeView(screenShot);
-            screenShot=null;
-        }
-    }
-
-
-    /*------------------------------------------------------------------------------------------*/
-
-    /**
-     * 获取和保存当前屏幕的截图
-     */
-    public static void GetandSaveCurrentImage(Context context, Activity activity)
-    {
-//构建Bitmap
-        WindowManager windowManager = getWindowManager(context);
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager(context).getDefaultDisplay().getMetrics(dm);
-        int w=dm.widthPixels;
-        int h=dm.heightPixels;
-        Bitmap Bmp=Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-//获取屏幕
-        View decorview = activity.getWindow().getDecorView();
-        decorview.setDrawingCacheEnabled(true);
-        Bmp = decorview.getDrawingCache();
-//        Bitmap Bmp= ScreenUtils.captureWithoutStatusBar(activity);
-//图片存储路径
-        String SavePath = getSDCardPath()+"/Demo/ScreenImages";
-//保存Bitmap
-        try {
-            File path = new File(SavePath);
-//文件
-            String filepath = SavePath + "/Screen_1.png";
-            File file = new File(filepath);
-            if(!path.exists()){
-                path.mkdirs();
-            }
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-            FileOutputStream fos = null;
-            fos = new FileOutputStream(file);
-            if (null != fos) {
-                Bmp.compress(Bitmap.CompressFormat.PNG, 90, fos);
-                fos.flush();
-                fos.close();
-                Toast.makeText(context, "截屏文件已保存至SDCard/ScreenImages/目录下",Toast.LENGTH_LONG).show();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    /**
-     * 获取SDCard的目录路径功能
-     * @return
-     */
-    private static String getSDCardPath(){
-        File sdcardDir = null;
-//判断SDCard是否存在
-        boolean sdcardExist = Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
-        if(sdcardExist){
-            sdcardDir = Environment.getExternalStorageDirectory();
-        }
-        return sdcardDir.toString();
-    }
-
-
-    /*------------------------------------------------------------------------------------------*/
-
-
-
-
-
-
-
-
     private static WindowManager getWindowManager(Context context) {
         if (mWindowManager == null) {
             mWindowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);

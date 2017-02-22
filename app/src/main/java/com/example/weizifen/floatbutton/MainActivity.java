@@ -6,14 +6,16 @@ import android.content.Intent;
 import android.media.projection.MediaProjectionManager;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.weizifen.floatbutton.Service.CaptureService;
 import com.example.weizifen.floatbutton.Service.FloatBallService;
-import com.example.weizifen.floatbutton.Service.FloatWindowsService;
 import com.example.weizifen.floatbutton.Util.AccessibilityUtil;
 import com.example.weizifen.floatbutton.Util.LockUtil;
 
@@ -25,20 +27,38 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public static final int REQUEST_MEDIA_PROJECTION = 18;
+
+
+
 
 
     /*===========锁屏=========*/
-//    private static final int MY_REQUEST_CODE = 9999;
-//    private DevicePolicyManager policyManager;
-//    private ComponentName componentName;
+    private Button mScreenShortBtn;
+    private Button mScreenRecordBtn;
+    private MediaProjectionManager mMpMngr;
+    private static final int REQUEST_MEDIA_PROJECTION = 1;
+    private Intent mResultIntent = null;
+    private int mResultCode = 0;
+    boolean isCapture;
 
+    private Button jietu;
+
+
+
+
+    private static final String TAG = "MainActivity";
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ball_view);
+        mMpMngr = (MediaProjectionManager) getApplicationContext().getSystemService(Context.MEDIA_PROJECTION_SERVICE);
+        mResultIntent = ((MyApplication) getApplication()).getResultIntent();
+        mResultCode = ((MyApplication) getApplication()).getResultCode();
         initView();
-        requestCapturePermission();
+        /*截图服务*/
+        startIntent();
+
 
 
 
@@ -52,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
         }
         if (Build.VERSION.SDK_INT>23)
         {
+
+
             if (!Settings.canDrawOverlays(this))
             {
                 Intent intent=new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
@@ -59,9 +81,6 @@ public class MainActivity extends AppCompatActivity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivityForResult(intent,1);
                 Toast.makeText(this, "Please allow FloatBall for top", Toast.LENGTH_SHORT).show();
-
-
-
             }
 
 
@@ -72,11 +91,12 @@ public class MainActivity extends AppCompatActivity {
     /*
     * 初始化
     * */
-    private void initView()
+    public void initView()
     {
         mBtnStart=(Button)findViewById(R.id.btn_start);
         mBtnQuit=(Button)findViewById(R.id.btn_quit);
         mBtnStart.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View view) {
                 checkAccessibility();
@@ -85,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
                 data.putInt("type",FloatBallService.TYPE_ADD);
                 intent.putExtras(data);
                 startService(intent);
+
             }
         });
         mBtnQuit.setOnClickListener(new View.OnClickListener() {
@@ -94,12 +115,20 @@ public class MainActivity extends AppCompatActivity {
                 Bundle data=new Bundle();
                 data.putInt("type",FloatBallService.TYPE_DEL);
                 intent.putExtras(data);
-                startService(intent);
             }
         });
 
 
     }
+/*------------锁屏意图------------------*/
+@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+private void startIntent() {
+    if (mResultIntent != null && mResultCode != 0) {
+        startService(new Intent(getApplicationContext(), CaptureService.class));
+    } else {
+        startActivityForResult(mMpMngr.createScreenCaptureIntent(), REQUEST_MEDIA_PROJECTION);
+    }
+}
 
 
 
@@ -130,12 +159,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_MEDIA_PROJECTION && resultCode == RESULT_OK&& data != null)
-        {
-            FloatWindowsService.setResultData(data);
-            startService(new Intent(getApplicationContext(), FloatWindowsService.class));
-
+        /*-----------------截屏----------------*/
+        if (requestCode == REQUEST_MEDIA_PROJECTION) {
+            if (resultCode == RESULT_OK) {
+                Log.e(TAG,"get capture permission success!");
+                mResultCode = resultCode;
+                mResultIntent = data;
+                ((MyApplication) getApplication()).setResultCode(resultCode);
+                ((MyApplication) getApplication()).setResultIntent(data);
+                ((MyApplication) getApplication()).setMpmngr(mMpMngr);
+//                startService(new Intent(getApplicationContext(),isCapture?CaptureService.class:RecordService.class));
+                startService(new Intent(this,CaptureService.class));
+            }
         }
+        /*-----------------息屏-------------------*/
         if (requestCode == LockUtil.MY_REQUEST_CODE && resultCode == RESULT_OK) {
             if (!LockUtil.policyManager.isAdminActive(LockUtil.componentName)) {   //若无权限
             }
@@ -148,20 +185,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void requestCapturePermission() {
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            //5.0 之后才允许使用屏幕截图
-
-            return;
-        }
-
-        MediaProjectionManager mediaProjectionManager = (MediaProjectionManager)
-               getSystemService(Context.MEDIA_PROJECTION_SERVICE);
-               startActivityForResult(
-                mediaProjectionManager.createScreenCaptureIntent(),
-                REQUEST_MEDIA_PROJECTION);
-    }
 //    /**
 //     * 锁屏
 //     */
