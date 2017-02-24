@@ -73,7 +73,10 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".Main2Activity"></activity>
+        <activity android:name=".Main2Activity"
+            android:theme="@android:style/Theme.Dialog"
+
+            ></activity>
     </application>
 
 </manifest>

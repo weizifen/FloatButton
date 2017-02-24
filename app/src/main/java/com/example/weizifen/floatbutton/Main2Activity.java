@@ -1,5 +1,6 @@
 package com.example.weizifen.floatbutton;
 
+import android.app.Activity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,7 +15,7 @@ import com.viewpagerindicator.CirclePageIndicator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Main2Activity extends AppCompatActivity {
+public class Main2Activity extends Activity {
     public static int item_grid_num = 9;//每一页中GridView中item的数量
     public static int number_columns = 3;//gridview一行展示的数目
     private ViewPager view_pager;
