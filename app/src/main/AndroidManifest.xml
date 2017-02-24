@@ -18,13 +18,13 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.DEVICE_POWER" />
 
-    <!--闪光灯 -->
+    <!-- 闪光灯 -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
-    <uses-feature android:name="android.hardware.camera" />
-    <!--允许网络-->
-    <uses-permission android:name="android.permission.INTERNET"/>
 
+    <uses-feature android:name="android.hardware.camera" />
+    <!-- 允许网络 -->
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".MyApplication"
@@ -55,9 +55,9 @@
                 android:name="android.accessibilityservice"
                 android:resource="@xml/accessibilityservice" />
         </service>
-        <!--截屏AND录屏-->
-        <service android:name=".Service.CaptureService"/>
-        <service android:name=".Service.RecordService"/>
+        <!-- 截屏AND录屏 -->
+        <service android:name=".Service.CaptureService" />
+        <service android:name=".Service.RecordService" />
         <!-- 设备管理 -->
         <receiver
             android:name=".Util.AdminReceiver"
@@ -73,6 +73,7 @@
             </intent-filter>
         </receiver>
 
+        <activity android:name=".Main2Activity"></activity>
     </application>
 
 </manifest>

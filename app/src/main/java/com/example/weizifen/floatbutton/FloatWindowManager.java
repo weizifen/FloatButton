@@ -39,10 +39,23 @@ public class FloatWindowManager {
     private static WindowManager.LayoutParams bigWindowParams;
 
 
-    /**
-     * 截图悬浮窗View的参数
-     */
-    private static WindowManager.LayoutParams shotWindowParams;
+
+
+//
+//
+//    /**
+//     * PagerView的实例
+//     */
+//    private static PagerViewWindow pagerViewWindowWindow;
+//    /**
+//     * PagerView的参数
+//     */
+//    private static WindowManager.LayoutParams pagerViewWindowParams;
+
+
+
+
+
 
 
     /*添加ADDVIEW*/
@@ -146,4 +159,32 @@ public class FloatWindowManager {
         return mWindowManager;
     }
 
+
+
+//    /**
+//     * 创建一个PagerView悬浮窗。位置为屏幕正中间。
+//     */
+//    public static void createPagerView(Context context) {
+//        WindowManager windowManager = getWindowManager(context);
+//        DisplayMetrics dm = new DisplayMetrics();
+//        getWindowManager(context).getDefaultDisplay().getMetrics(dm);
+//        int screenWidth=dm.widthPixels;
+//        int screenHeight=dm.heightPixels;
+//        if (pagerViewWindowWindow == null) {
+//            pagerViewWindowWindow = new PagerViewWindow(context);
+//            if (pagerViewWindowParams == null) {
+//                pagerViewWindowParams = new WindowManager.LayoutParams();
+//                pagerViewWindowParams.x = screenWidth / 2
+//                        - PagerViewWindow.viewWidth / 2;
+//                pagerViewWindowParams.y = screenHeight / 2
+//                        - PagerViewWindow.viewHeight / 2;
+//                pagerViewWindowParams.type = WindowManager.LayoutParams.TYPE_PHONE;
+//                pagerViewWindowParams.format = PixelFormat.RGBA_8888;
+//                pagerViewWindowParams.gravity = Gravity.LEFT | Gravity.TOP;
+//                pagerViewWindowParams.width = PagerViewWindow.viewWidth;
+//                pagerViewWindowParams.height = PagerViewWindow.viewHeight;
+//            }
+//            windowManager.addView(pagerViewWindowWindow, pagerViewWindowParams);
+//        }
+//    }
 }

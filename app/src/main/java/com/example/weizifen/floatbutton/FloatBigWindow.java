@@ -20,7 +20,6 @@ import com.example.weizifen.floatbutton.Other.FinalInfo;
 import com.example.weizifen.floatbutton.Service.CaptureService;
 import com.example.weizifen.floatbutton.Util.Flash;
 import com.example.weizifen.floatbutton.Util.LockUtil;
-import com.example.weizifen.floatbutton.Util.ShotUtil;
 
 
 /**
@@ -90,7 +89,6 @@ public class FloatBigWindow extends LinearLayout {
         Two.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-//                ShotUtil.requestCapturePermission(MainActivity.instance);
                 FloatWindowManager.removeBigWindow(context);
                 Intent intent=new Intent(FinalInfo.JIETU);
                 context.sendBroadcast(intent);

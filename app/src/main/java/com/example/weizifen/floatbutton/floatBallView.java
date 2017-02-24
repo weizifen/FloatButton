@@ -2,6 +2,7 @@ package com.example.weizifen.floatbutton;
 
 import android.accessibilityservice.AccessibilityService;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Vibrator;
 import android.support.annotation.RequiresApi;
@@ -180,7 +181,9 @@ public class floatBallView extends LinearLayout {
                         else {
                             waitDouble = true;
                             Log.d(TAG, "double");
-                            FloatWindowManager.createBigWindow(getContext());
+//                            FloatWindowManager.createBigWindow(getContext());
+                            Intent intent=new Intent(MainActivity.instance,Main2Activity.class);
+                            MainActivity.context.startActivity(intent);
                         }
 
                         postDelayed(new Runnable() {
